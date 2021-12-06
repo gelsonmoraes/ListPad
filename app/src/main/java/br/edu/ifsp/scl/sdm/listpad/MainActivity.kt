@@ -1,57 +1,85 @@
 package br.edu.ifsp.scl.sdm.listpad
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
+import android.view.MenuItem
+import android.widget.ArrayAdapter
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityMainBinding
+import br.edu.ifsp.scl.sdm.listpad.model.Itens
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.appBarMain.toolbar)
-
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+    companion object Extras {
+        const val EXTRA_ITEM = "ITEM_EXTRA"
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+    private val activityMainBinding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+    // Data source
+    private val itensList: MutableList<Itens> = mutableListOf()
+
+    //Adapter
+    private val itensAdapter: ArrayAdapter<String> by lazy{
+
+        val itensStringList = mutableListOf<String>()
+        itensList.forEach { itens -> itensStringList.add(itens.toString()) }
+        ArrayAdapter(this, android.R.layout.simple_list_item_1, itensStringList)
+    }
+
+    //Activity Result Launcher
+    private lateinit var itemActivityResultLauncher: ActivityResultLauncher<Intent>
+
+
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+        setContentView(activityMainBinding.itensLv)
+
+        //Iniciando a lista de listas
+        inicializarListaItens();
+
+        activityMainBinding.itensLv.adapter = itensAdapter
+
+        itemActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            resultado -> if (resultado.resultCode == RESULT_OK){
+                resultado.data?.getParcelableExtra<Itens>(EXTRA_ITEM)?.apply {
+                    itensList.add(this)
+                    itensAdapter.add(this.toString())
+                }
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId){
+            R.id.adicionarItemMi -> {
+
+                itemActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
+                true
+            }
+            else -> {
+                false
+            }
     }
+
+    private fun inicializarListaItens(){
+        for (indice in 1..10){
+            itensList.add(
+                Itens(
+                    "Tipo: $indice",
+                    "Descrição $indice"
+                )
+            )
+        }
+    }
+
 }
