@@ -24,7 +24,7 @@ public class ItemActivity extends AppCompatActivity {
             Itens item = new Itens(
                     activityItemBinding.nomeEt.getText().toString(),
                     activityItemBinding.descricaoEt.getText().toString()
-                    );
+            );
             Intent resultadoIntent = new Intent();
             resultadoIntent.putExtra(MainActivity.EXTRA_ITEM, item);
             setResult(RESULT_OK, resultadoIntent);

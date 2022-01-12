@@ -8,8 +8,9 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import br.edu.ifsp.scl.sdm.listpad.adapter.ItemAdapter
 import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityMainBinding
-import br.edu.ifsp.scl.sdm.listpad.model.Itens
+import br.edu.ifsp.scl.sdm.listpad.model.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,13 +23,15 @@ class MainActivity : AppCompatActivity() {
     }
     // Data source
     private val itensList: MutableList<Itens> = mutableListOf()
+    private val compraList: MutableList<Compra> = mutableListOf()
+    private val compromissoList: MutableList<Compromisso> = mutableListOf()
+    private val geralList: MutableList<Geral> = mutableListOf()
+    private val tarefaList: MutableList<Tarefa> = mutableListOf()
+
 
     //Adapter
-    private val itensAdapter: ArrayAdapter<String> by lazy{
-
-        val itensStringList = mutableListOf<String>()
-        itensList.forEach { itens -> itensStringList.add(itens.toString()) }
-        ArrayAdapter(this, android.R.layout.simple_list_item_1, itensStringList)
+    private val itensAdapter: ItemAdapter by lazy{
+        ItemAdapter(this, itensList)
     }
 
     //Activity Result Launcher
@@ -48,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             resultado -> if (resultado.resultCode == RESULT_OK){
                 resultado.data?.getParcelableExtra<Itens>(EXTRA_ITEM)?.apply {
                     itensList.add(this)
-                    itensAdapter.add(this.toString())
+                    itensAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -72,14 +75,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarListaItens(){
-        for (indice in 1..10){
-            itensList.add(
-                Itens(
-                    "Tipo: $indice",
-                    "Descrição $indice"
-                )
+//        for (indice in 1..10){
+//            itensList.add(
+//                Itens(
+//                    "Tipo: $indice",
+//                    "Descrição $indice",
+//                    this.itensList
+//                )
+//            )
+//        }
+
+        itensList.add(
+            Itens(
+            "Compras",
+                "Nesta lista você coloca o que precisa comprar.",
+        )
+
+        )
+        itensList.add(
+            Itens(
+                "Compromisso",
+                "Nesta lista você coloca seus próximos eventos.",
             )
-        }
+        )
+        itensList.add(
+            Itens(
+                "Geral",
+                "Lista de elementos em geral, aqui você pode listar o que quiser.",
+            )
+        )
+        itensList.add(
+            Itens(
+                "Tarefa",
+                "Aqui você tem sua lista de afazeres.",
+            )
+        )
     }
 
 }

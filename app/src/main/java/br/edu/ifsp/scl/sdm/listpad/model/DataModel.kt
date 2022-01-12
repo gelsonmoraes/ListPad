@@ -9,8 +9,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Itens(
-    val nomeLista : String,
-    val descLista : String,
+    val nomeLista: String,
+    val descLista: String
 ) : Parcelable
 
 @Parcelize
