@@ -24,14 +24,26 @@ class ItemAdapter(
             //view precisa ser inflada
             val layoutItensBinding = LayoutGenericoBinding.inflate(
                 (contexto.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater), parent, false)
+            val itensLayoutHolder = ItensLayoutHolder(layoutItensBinding.nomeTv, layoutItensBinding.descricaoTv)
+
+            layoutItensBinding.root.tag = itensLayoutHolder
+
             layoutItensBinding.root
         }
 
         //Preenchendo ou atualizando a view
         val item: Itens = itensList[position]
-        itemLayout.findViewById<TextView>(R.id.tituloTv).text = item.nomeLista
-        itemLayout.findViewById<TextView>(R.id.descricaoTv).text = item.descLista
+        val holder = itemLayout.tag as ItensLayoutHolder
+        holder.nomeTv.text = item.nomeLista
+        holder.descricaoTv.text = item.descLista
 
         return itemLayout
+    }
+
+    private data class ItensLayoutHolder(
+        val nomeTv : TextView,
+        val descricaoTv : TextView
+    ){
+
     }
 }
