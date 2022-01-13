@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding.itensLv.setOnItemClickListener{_, _, posicao, _ ->
             val item = itensList[posicao]
-
         }
 
 
@@ -115,10 +114,11 @@ class MainActivity : AppCompatActivity() {
         val posicao = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
 
         return when(item.itemId){
-            R.id.detalhesItemMi ->{
+            R.id.detalhesItemMi -> {
                 //Consultar detalhes
                 val item = itensList[posicao]
                 val consultarItemIntent = Intent(this, ItemActivity::class.java)
+                consultarItemIntent.putExtra(EXTRA_ITEM, item)
                 startActivity(consultarItemIntent)
                 true
             }

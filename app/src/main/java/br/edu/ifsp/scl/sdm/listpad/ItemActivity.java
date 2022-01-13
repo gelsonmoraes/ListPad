@@ -43,7 +43,7 @@ public class ItemActivity extends AppCompatActivity {
         item = getIntent().getParcelableExtra(MainActivity.EXTRA_ITEM);
         posicao = getIntent().getIntExtra(MainActivity.EXTRA_POSICAO, -1);
 
-        if(item != null && posicao != -1) {
+        if(item != null) {
             activityItemBinding.nomeEt.setText(item.getNomeLista());
             activityItemBinding.descricaoEt.setText(item.getDescLista());
             if (posicao == -1){
