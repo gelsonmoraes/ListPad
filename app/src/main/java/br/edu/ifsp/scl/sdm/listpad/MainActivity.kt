@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        setContentView(activityMainBinding.itensLv)
+        setContentView(activityMainBinding.root)
 
         //Iniciando a lista de itens
         inicializarListaItens();
@@ -82,6 +81,12 @@ class MainActivity : AppCompatActivity() {
 
         //Associando a listview com menu de contexto
         registerForContextMenu(activityMainBinding.itensLv)
+
+        //Eventos do Fab adicionar
+        activityMainBinding.adicionarItemFab.setOnClickListener{
+            itemActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -91,9 +96,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId){
-            R.id.adicionarItemMi -> {
+            R.id.sairMi -> {
 
-                itemActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
+                finish()
                 true
             }
             else -> {
@@ -142,15 +147,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarListaItens(){
-//        for (indice in 1..10){
-//            itensList.add(
-//                Itens(
-//                    "Tipo: $indice",
-//                    "Descrição $indice",
-//                    this.itensList
-//                )
-//            )
-//        }
 
         itensList.add(
             Itens(
