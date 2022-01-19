@@ -10,11 +10,13 @@ import android.widget.AdapterView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.scl.sdm.listpad.adapter.ItemAdapter
+import br.edu.ifsp.scl.sdm.listpad.adapter.ItensRvAdapter
 import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityMainBinding
 import br.edu.ifsp.scl.sdm.listpad.model.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     companion object Extras {
         const val EXTRA_ITEM = "ITEM_EXTRA"
@@ -33,8 +35,13 @@ class MainActivity : AppCompatActivity() {
 
 
     //Adapter
-    private val itensAdapter: ItemAdapter by lazy{
-        ItemAdapter(this, itensList)
+    private val itensAdapter: ItensRvAdapter by lazy{
+        ItensRvAdapter(this, itensList)
+    }
+
+    //LayoutManager
+    private val itensLayoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(this)
     }
 
     //Activity Result Launcher
@@ -49,7 +56,10 @@ class MainActivity : AppCompatActivity() {
         //Iniciando a lista de itens
         inicializarListaItens();
 
-        activityMainBinding.itensLv.adapter = itensAdapter
+        //Associa view com Adapter e com o LayoutManager
+        activityMainBinding.itensRv.adapter = itensAdapter
+        activityMainBinding.itensRv.layoutManager = itensLayoutManager
+
 
         itemActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             resultado -> if (resultado.resultCode == RESULT_OK){
@@ -73,14 +83,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        activityMainBinding.itensLv.setOnItemClickListener{_, _, posicao, _ ->
-            val item = itensList[posicao]
-        }
-
-
 
         //Associando a listview com menu de contexto
-        registerForContextMenu(activityMainBinding.itensLv)
+        registerForContextMenu(activityMainBinding.itensRv)
 
         //Eventos do Fab adicionar
         activityMainBinding.adicionarItemFab.setOnClickListener{
@@ -173,6 +178,13 @@ class MainActivity : AppCompatActivity() {
                 "Aqui você tem sua lista de afazeres.",
             )
         )
+    }
+
+    override fun OnItemClick(posicao: Int) {
+        val item = itensList[posicao]
+        val consultarItemIntent = Intent(this, ItemActivity::class.java)
+        consultarItemIntent.putExtra(EXTRA_ITEM, item)
+        startActivity(consultarItemIntent)
     }
 
 }
