@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ifsp.scl.sdm.listpad.databinding.LayoutGenericoBinding
+import br.edu.ifsp.scl.sdm.listpad.model.Compra
 import br.edu.ifsp.scl.sdm.listpad.model.Itens
 
 class ItensRvAdapter(

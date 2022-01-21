@@ -17,26 +17,22 @@ data class Itens(
 data class Tarefa(
     val nomeTarefa : String,
     val descTarefa: String,
-    val prioridadeTarefa : Boolean
 ) : Parcelable
 
 @Parcelize
 data class Compra(
     val nomeCompra : String,
     val descCompra : String,
-    val prioridadeCompra : Boolean
 ) : Parcelable
 
 @Parcelize
 data class Compromisso(
     val nomeCompromisso : String,
     val descCompromisso : String,
-    val prioridadeCompromisso : Boolean
 ) : Parcelable
 
 @Parcelize
 data class Geral(
     val nomeGeral : String,
     val descGeral: String,
-    val prioridadeGeral : Boolean
 ) : Parcelable

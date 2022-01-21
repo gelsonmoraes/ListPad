@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/acessarItemMi"
-        android:title="Acessar esta lista"
-        />
-    <item
         android:id="@+id/detalhesItemMi"
         android:title="Detalhes"
         />
@@ -12,5 +8,8 @@
         android:id="@+id/editarItemMi"
         android:title="Editar"
         />
-
+    <item
+        android:id="@+id/removerItemMi"
+        android:title="Remover"
+        />
 </menu>

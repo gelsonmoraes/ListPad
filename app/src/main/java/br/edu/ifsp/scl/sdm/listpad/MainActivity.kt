@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -79,18 +78,11 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 }
             }
         }
-
-
-
-        //Eventos do Fab adicionar
-        activityMainBinding.adicionarItemFab.setOnClickListener{
-            itemActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
-        }
-
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
@@ -142,12 +134,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 editarItemActivityResultLauncher.launch(editarItemIntent)
                 true
             }
-            R.id.removerItemMi -> {
-                //Remover Item da Lista
-                itensList.removeAt(posicao)
-                itensAdapter.notifyDataSetChanged()
-                true
-            }
+
             else -> {false}
         }
     }
