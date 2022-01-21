@@ -120,7 +120,14 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             R.id.detalhesItemMi -> {
                 //Consultar detalhes
                 val item = itensList[posicao]
-                val consultarItemIntent = Intent(this, ItemActivity::class.java)
+                var consultarItemIntent = Intent()
+                when(posicao) {
+                    0 -> consultarItemIntent = Intent(this, ComprasListaActivity::class.java)
+                    1 -> consultarItemIntent = Intent(this, CompromissosListaActivity::class.java)
+                    2 -> consultarItemIntent = Intent(this, GeralListaActivity::class.java)
+                    3 -> consultarItemIntent = Intent(this, TarefasListaActivity::class.java)
+                    else -> { "Invalid activity" }
+                }
                 consultarItemIntent.putExtra(EXTRA_ITEM, item)
                 startActivity(consultarItemIntent)
                 true

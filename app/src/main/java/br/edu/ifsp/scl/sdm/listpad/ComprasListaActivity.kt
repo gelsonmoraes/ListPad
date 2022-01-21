@@ -60,7 +60,6 @@ class ComprasListaActivity : AppCompatActivity(), OnItemClickListener {
                 if (resultado.resultCode == RESULT_OK) {
                     resultado.data?.getParcelableExtra<Compra>(EXTRA_COMPRA)?.apply {
                         compraList.add(this)
-                        comprasDatabaseHandler.onCreate(DB_NAME)
                         comprasAdapter.notifyDataSetChanged()
                     }
                 }

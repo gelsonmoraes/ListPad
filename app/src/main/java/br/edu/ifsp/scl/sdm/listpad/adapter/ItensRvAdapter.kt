@@ -10,7 +10,6 @@ import br.edu.ifsp.scl.sdm.listpad.db.DatabaseHandler
 
 class ItensRvAdapter(
     private val onItemClickListener: MainActivity,
-    private val dbComprasDatabaseHandler: DatabaseHandler,
     private val itensList: MutableList<Itens>
 ): RecyclerView.Adapter<ItensRvAdapter.ItemLayoutHolder>() {
 
