@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ListPad">
         <activity
+            android:name=".TarefasListaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GeralListaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CompromissosListaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComprasListaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ItemActivity"
             android:exported="false" />
         <activity

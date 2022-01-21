@@ -7,27 +7,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/comprasTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Lista de Compras"
+        android:text="Lista de Tarefas"
         android:textSize="25dp"
+        android:layout_margin="10dp"
+        android:id="@+id/listaTarefasTv"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itensRv"
-        android:layout_width="390dp"
-        android:layout_height="586dp"
+        android:layout_width="394dp"
+        android:layout_height="471dp"
         android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comprasTv"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listaTarefasTv" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/adicionarItemFab"
@@ -35,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:contentDescription="Adicionar Livro"
+        android:contentDescription="Adicionar Tarefa"
         android:focusable="true"
         app:srcCompat="@drawable/ic_adicionar_item2"
         app:layout_constraintBottom_toBottomOf="parent"

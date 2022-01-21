@@ -2,16 +2,13 @@ package br.edu.ifsp.scl.sdm.listpad
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.edu.ifsp.scl.sdm.listpad.adapter.ItemAdapter
 import br.edu.ifsp.scl.sdm.listpad.adapter.ItensRvAdapter
 import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityMainBinding
 import br.edu.ifsp.scl.sdm.listpad.model.*
@@ -28,10 +25,10 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     }
     // Data source
     private val itensList: MutableList<Itens> = mutableListOf()
-    private val compraList: MutableList<Compra> = mutableListOf()
     private val compromissoList: MutableList<Compromisso> = mutableListOf()
     private val geralList: MutableList<Geral> = mutableListOf()
     private val tarefaList: MutableList<Tarefa> = mutableListOf()
+
 
 
     //Adapter
@@ -84,8 +81,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         }
 
 
-        //Associando a listview com menu de contexto
-        registerForContextMenu(activityMainBinding.itensRv)
 
         //Eventos do Fab adicionar
         activityMainBinding.adicionarItemFab.setOnClickListener{
@@ -102,7 +97,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId){
             R.id.sairMi -> {
-
                 finish()
                 true
             }
@@ -111,19 +105,26 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             }
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        menuInflater.inflate(R.menu.context_menu_main, menu)
-    }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val posicao = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
+        val posicao = itensAdapter.posicao
 
         return when(item.itemId){
+            R.id.acessarItemMi -> {
+               //Acessar a lista selecionada
+                val item = itensList[posicao]
+                var acessarItemIntent = Intent()
+                when(posicao) {
+                    0 -> acessarItemIntent = Intent(this, ComprasListaActivity::class.java)
+                    1 -> acessarItemIntent = Intent(this, CompromissosListaActivity::class.java)
+                    2 -> acessarItemIntent = Intent(this, GeralListaActivity::class.java)
+                    3 -> acessarItemIntent = Intent(this, TarefasListaActivity::class.java)
+                    else -> { "Invalid activity" }
+                }
+                acessarItemIntent.putExtra(EXTRA_ITEM, item)
+                startActivity(acessarItemIntent)
+                true
+            }
             R.id.detalhesItemMi -> {
                 //Consultar detalhes
                 val item = itensList[posicao]
@@ -182,9 +183,15 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun OnItemClick(posicao: Int) {
         val item = itensList[posicao]
-        val consultarItemIntent = Intent(this, ItemActivity::class.java)
-        consultarItemIntent.putExtra(EXTRA_ITEM, item)
-        startActivity(consultarItemIntent)
+        var acessarItemIntent = Intent()
+        when(posicao) {
+            0 -> acessarItemIntent = Intent(this, ComprasListaActivity::class.java)
+            1 -> acessarItemIntent = Intent(this, CompromissosListaActivity::class.java)
+            2 -> acessarItemIntent = Intent(this, GeralListaActivity::class.java)
+            3 -> acessarItemIntent = Intent(this, TarefasListaActivity::class.java)
+            else -> { "Invalid activity" }
+        }
+        acessarItemIntent.putExtra(EXTRA_ITEM, item)
+        startActivity(acessarItemIntent)
     }
-
 }
