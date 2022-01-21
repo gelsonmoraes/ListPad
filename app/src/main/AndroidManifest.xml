@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ListPad">
         <activity
+            android:name=".TarefaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GeralActivity"
+            android:exported="false" />
+        <activity
             android:name=".TarefasListaActivity"
             android:exported="false" />
         <activity

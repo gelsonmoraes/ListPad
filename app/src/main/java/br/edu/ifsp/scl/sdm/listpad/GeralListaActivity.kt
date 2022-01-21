@@ -24,19 +24,19 @@ class GeralListaActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     // Data Source
-    private val compraList: MutableList<Geral> = mutableListOf()
+    private val geralList: MutableList<Geral> = mutableListOf()
 
     //Adapter
-    private val comprasAdapter: GeralRvAdapter by lazy {
-        GeralRvAdapter(this, compraList)
+    private val geralAdapter: GeralRvAdapter by lazy {
+        GeralRvAdapter(this, geralList)
     }
 
     //Activity Result Launcher
-    private lateinit var compraListaActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var geralListaActivityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var editarGeralListaActivityResultLauncher: ActivityResultLauncher<Intent>
 
     //LayoutManager
-    private val comprasLayoutManager: LinearLayoutManager by lazy {
+    private val geralLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this)
     }
 
@@ -46,15 +46,15 @@ class GeralListaActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(activityGeralListaBinding.root)
 
         //Associa view com Adapter e com o LayoutManager
-        activityGeralListaBinding.itensRv.adapter = comprasAdapter
-        activityGeralListaBinding.itensRv.layoutManager = comprasLayoutManager
+        activityGeralListaBinding.itensRv.adapter = geralAdapter
+        activityGeralListaBinding.itensRv.layoutManager = geralLayoutManager
 
-        compraListaActivityResultLauncher =
+        geralListaActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
                 if (resultado.resultCode == RESULT_OK) {
                     resultado.data?.getParcelableExtra<Geral>(EXTRA_GERAL)?.apply {
-                        compraList.add(this)
-                        comprasAdapter.notifyDataSetChanged()
+                        geralList.add(this)
+                        geralAdapter.notifyDataSetChanged()
                     }
                 }
 
@@ -65,15 +65,15 @@ class GeralListaActivity : AppCompatActivity(), OnItemClickListener {
                     val posicao = resultado.data?.getIntExtra(EXTRA_POSICAO_GERAL, -1)
                     resultado.data?.getParcelableExtra<Geral>(EXTRA_GERAL)?.apply {
                         if (posicao != -1 && posicao != null) {
-                            compraList[posicao] = this
-                            comprasAdapter.notifyDataSetChanged()
+                            geralList[posicao] = this
+                            geralAdapter.notifyDataSetChanged()
                         }
                     }
                 }
             }
         //Tratando o evento do Fab
         activityGeralListaBinding.adicionarItemFab.setOnClickListener {
-            compraListaActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
+            geralListaActivityResultLauncher.launch(Intent(this, GeralActivity::class.java))
         }
 
     }
@@ -94,21 +94,21 @@ class GeralListaActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val posicao = comprasAdapter.posicao
+        val posicao = geralAdapter.posicao
 
         return when (item.itemId) {
             R.id.detalhesItemMi -> {
                 //Consultar detalhes
-                val item = compraList[posicao]
-                val consultarGeralIntent = Intent(this, ItemActivity::class.java)
+                val item = geralList[posicao]
+                val consultarGeralIntent = Intent(this, GeralActivity::class.java)
                 consultarGeralIntent.putExtra(GeralListaActivity.EXTRA_GERAL, item)
                 startActivity(consultarGeralIntent)
                 true
             }
             R.id.editarItemMi -> {
                 //Editar Geral da Lista
-                val item = compraList[posicao]
-                val editarGeralIntent = Intent(this, ItemActivity::class.java)
+                val item = geralList[posicao]
+                val editarGeralIntent = Intent(this, GeralActivity::class.java)
                 editarGeralIntent.putExtra(GeralListaActivity.EXTRA_GERAL, item)
                 editarGeralIntent.putExtra(GeralListaActivity.EXTRA_POSICAO_GERAL, posicao)
                 editarGeralListaActivityResultLauncher.launch(editarGeralIntent)
@@ -116,8 +116,8 @@ class GeralListaActivity : AppCompatActivity(), OnItemClickListener {
             }
             R.id.removerItemMi -> {
                 //Remover Item da Lista
-                compraList.removeAt(posicao)
-                comprasAdapter.notifyDataSetChanged()
+                geralList.removeAt(posicao)
+                geralAdapter.notifyDataSetChanged()
                 true
             }
             else -> {
@@ -127,8 +127,8 @@ class GeralListaActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun OnItemClick(posicao: Int) {
-        val item = compraList[posicao]
-        val consultarGeralIntent = Intent(this, ItemActivity::class.java)
+        val item = geralList[posicao]
+        val consultarGeralIntent = Intent(this, GeralActivity::class.java)
         consultarGeralIntent.putExtra(GeralListaActivity.EXTRA_GERAL, item)
         startActivity(consultarGeralIntent)
     }

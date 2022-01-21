@@ -24,19 +24,19 @@ class TarefasListaActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     // Data Source
-    private val compraList: MutableList<Tarefa> = mutableListOf()
+    private val tarefaList: MutableList<Tarefa> = mutableListOf()
 
     //Adapter
-    private val comprasAdapter: TarefasRvAdapter by lazy {
-        TarefasRvAdapter(this, compraList)
+    private val tarefasAdapter: TarefasRvAdapter by lazy {
+        TarefasRvAdapter(this, tarefaList)
     }
 
     //Activity Result Launcher
-    private lateinit var compraListaActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var tarefaListaActivityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var editarTarefasListaActivityResultLauncher: ActivityResultLauncher<Intent>
 
     //LayoutManager
-    private val comprasLayoutManager: LinearLayoutManager by lazy {
+    private val tarefasLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this)
     }
 
@@ -47,34 +47,33 @@ class TarefasListaActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(activityTarefasListaBinding.root)
 
         //Associa view com Adapter e com o LayoutManager
-        activityTarefasListaBinding.itensRv.adapter = comprasAdapter
-        activityTarefasListaBinding.itensRv.layoutManager = comprasLayoutManager
+        activityTarefasListaBinding.itensRv.adapter = tarefasAdapter
+        activityTarefasListaBinding.itensRv.layoutManager = tarefasLayoutManager
 
-        compraListaActivityResultLauncher =
+        tarefaListaActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
                 if (resultado.resultCode == RESULT_OK) {
                     resultado.data?.getParcelableExtra<Tarefa>(EXTRA_TAREFA)?.apply {
-                        compraList.add(this)
-                        comprasAdapter.notifyDataSetChanged()
+                        tarefaList.add(this)
+                        tarefasAdapter.notifyDataSetChanged()
                     }
                 }
-
-            }
+        }
         editarTarefasListaActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
                 if (resultado.resultCode == RESULT_OK) {
                     val posicao = resultado.data?.getIntExtra(EXTRA_POSICAO_TAREFA, -1)
                     resultado.data?.getParcelableExtra<Tarefa>(EXTRA_TAREFA)?.apply {
                         if (posicao != -1 && posicao != null) {
-                            compraList[posicao] = this
-                            comprasAdapter.notifyDataSetChanged()
+                            tarefaList[posicao] = this
+                            tarefasAdapter.notifyDataSetChanged()
                         }
                     }
                 }
-            }
+        }
         //Tratando o evento do Fab
         activityTarefasListaBinding.adicionarItemFab.setOnClickListener {
-            compraListaActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
+            tarefaListaActivityResultLauncher.launch(Intent(this, TarefaActivity::class.java))
         }
 
     }
@@ -95,21 +94,21 @@ class TarefasListaActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val posicao = comprasAdapter.posicao
+        val posicao = tarefasAdapter.posicao
 
         return when (item.itemId) {
             R.id.detalhesItemMi -> {
                 //Consultar detalhes
-                val item = compraList[posicao]
-                val consultarTarefaIntent = Intent(this, ItemActivity::class.java)
+                val item = tarefaList[posicao]
+                val consultarTarefaIntent = Intent(this, TarefaActivity::class.java)
                 consultarTarefaIntent.putExtra(TarefasListaActivity.EXTRA_TAREFA, item)
                 startActivity(consultarTarefaIntent)
                 true
             }
             R.id.editarItemMi -> {
                 //Editar Tarefa da Lista
-                val item = compraList[posicao]
-                val editarTarefaIntent = Intent(this, ItemActivity::class.java)
+                val item = tarefaList[posicao]
+                val editarTarefaIntent = Intent(this, TarefaActivity::class.java)
                 editarTarefaIntent.putExtra(TarefasListaActivity.EXTRA_TAREFA, item)
                 editarTarefaIntent.putExtra(TarefasListaActivity.EXTRA_POSICAO_TAREFA, posicao)
                 editarTarefasListaActivityResultLauncher.launch(editarTarefaIntent)
@@ -117,8 +116,8 @@ class TarefasListaActivity : AppCompatActivity(), OnItemClickListener {
             }
             R.id.removerItemMi -> {
                 //Remover Item da Lista
-                compraList.removeAt(posicao)
-                comprasAdapter.notifyDataSetChanged()
+                tarefaList.removeAt(posicao)
+                tarefasAdapter.notifyDataSetChanged()
                 true
             }
             else -> {
@@ -128,8 +127,8 @@ class TarefasListaActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun OnItemClick(posicao: Int) {
-        val item = compraList[posicao]
-        val consultarTarefaIntent = Intent(this, ItemActivity::class.java)
+        val item = tarefaList[posicao]
+        val consultarTarefaIntent = Intent(this, TarefaActivity::class.java)
         consultarTarefaIntent.putExtra(TarefasListaActivity.EXTRA_TAREFA, item)
         startActivity(consultarTarefaIntent)
     }

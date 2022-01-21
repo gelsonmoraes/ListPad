@@ -1,5 +1,4 @@
 package br.edu.ifsp.scl.sdm.listpad
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,11 +7,8 @@ import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.edu.ifsp.scl.sdm.listpad.adapter.ComprasRvAdapter
 import br.edu.ifsp.scl.sdm.listpad.adapter.CompromissosRvAdapter
-import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityComprasListaBinding
 import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityCompromissosListaBinding
-import br.edu.ifsp.scl.sdm.listpad.model.Compra
 import br.edu.ifsp.scl.sdm.listpad.model.Compromisso
 
 class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
@@ -39,10 +35,9 @@ class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var editarCompromissosListaActivityResultLauncher: ActivityResultLauncher<Intent>
 
     //LayoutManager
-    private val compromissosLayoutManager: LinearLayoutManager by lazy {
+    private val compromissoLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this)
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +46,12 @@ class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
 
         //Associa view com Adapter e com o LayoutManager
         activityCompromissosListaBinding.itensRv.adapter = compromissoAdapter
-        activityCompromissosListaBinding.itensRv.layoutManager = compromissosLayoutManager
+        activityCompromissosListaBinding.itensRv.layoutManager = compromissoLayoutManager
 
         compromissoListaActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
                 if (resultado.resultCode == RESULT_OK) {
-                    resultado.data?.getParcelableExtra<Compromisso>(EXTRA_COMPROMISSO)?.apply {
+                    resultado.data?.getParcelableExtra<Compromisso>(CompromissosListaActivity.EXTRA_COMPROMISSO)?.apply {
                         compromissoList.add(this)
                         compromissoAdapter.notifyDataSetChanged()
                     }
@@ -66,8 +61,8 @@ class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
         editarCompromissosListaActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
                 if (resultado.resultCode == RESULT_OK) {
-                    val posicao = resultado.data?.getIntExtra(EXTRA_POSICAO_COMPROMISSO, -1)
-                    resultado.data?.getParcelableExtra<Compromisso>(EXTRA_COMPROMISSO)?.apply {
+                    val posicao = resultado.data?.getIntExtra(CompromissosListaActivity.EXTRA_POSICAO_COMPROMISSO, -1)
+                    resultado.data?.getParcelableExtra<Compromisso>(CompromissosListaActivity.EXTRA_COMPROMISSO)?.apply {
                         if (posicao != -1 && posicao != null) {
                             compromissoList[posicao] = this
                             compromissoAdapter.notifyDataSetChanged()
@@ -76,10 +71,9 @@ class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
                 }
             }
         //Tratando o evento do Fab
-        activityCompromissosListaBinding.adicionarItemFab.setOnClickListener {
-            compromissoListaActivityResultLauncher.launch(Intent(this, ItemActivity::class.java))
+        activityCompromissosListaBinding.adicionarItemFab.setOnClickListener{
+            compromissoListaActivityResultLauncher.launch(Intent(this, CompromissoActivity::class.java))
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,17 +98,17 @@ class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
             R.id.detalhesItemMi -> {
                 //Consultar detalhes
                 val item = compromissoList[posicao]
-                val consultarCompromissoIntent = Intent(this, ItemActivity::class.java)
+                val consultarCompromissoIntent = Intent(this, CompromissoActivity::class.java)
                 consultarCompromissoIntent.putExtra(CompromissosListaActivity.EXTRA_COMPROMISSO, item)
                 startActivity(consultarCompromissoIntent)
                 true
             }
             R.id.editarItemMi -> {
-                //Editar Compra da Lista
+                //Editar Compromisso da Lista
                 val item = compromissoList[posicao]
-                val editarCompromissoIntent = Intent(this, ItemActivity::class.java)
+                val editarCompromissoIntent = Intent(this, CompromissoActivity::class.java)
                 editarCompromissoIntent.putExtra(CompromissosListaActivity.EXTRA_COMPROMISSO, item)
-                editarCompromissoIntent.putExtra(ComprasListaActivity.EXTRA_POSICAO_COMPRA, posicao)
+                editarCompromissoIntent.putExtra(CompromissosListaActivity.EXTRA_POSICAO_COMPROMISSO, posicao)
                 editarCompromissosListaActivityResultLauncher.launch(editarCompromissoIntent)
                 true
             }
@@ -132,7 +126,7 @@ class CompromissosListaActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun OnItemClick(posicao: Int) {
         val item = compromissoList[posicao]
-        val consultarCompromissoIntent = Intent(this, ItemActivity::class.java)
+        val consultarCompromissoIntent = Intent(this, CompromissoActivity::class.java)
         consultarCompromissoIntent.putExtra(CompromissosListaActivity.EXTRA_COMPROMISSO, item)
         startActivity(consultarCompromissoIntent)
     }
