@@ -25,6 +25,7 @@ public class TarefaActivity extends AppCompatActivity {
 
         activityItemBinding.salvarBtn.setOnClickListener((View view) -> {
             Tarefa item = new Tarefa(
+                    null,
                     activityItemBinding.nomeEt.getText().toString(),
                     activityItemBinding.descricaoEt.getText().toString()
             );

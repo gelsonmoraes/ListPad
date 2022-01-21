@@ -25,6 +25,7 @@ public class GeralActivity extends AppCompatActivity {
 
         activityItemBinding.salvarBtn.setOnClickListener((View view) -> {
             Geral item = new Geral(
+                    null,
                     activityItemBinding.nomeEt.getText().toString(),
                     activityItemBinding.descricaoEt.getText().toString()
             );

@@ -24,6 +24,7 @@ public class CompromissoActivity extends AppCompatActivity {
 
         activityItemBinding.salvarBtn.setOnClickListener((View view) -> {
             Compromisso item = new Compromisso(
+                    null,
                     activityItemBinding.nomeEt.getText().toString(),
                     activityItemBinding.descricaoEt.getText().toString()
             );

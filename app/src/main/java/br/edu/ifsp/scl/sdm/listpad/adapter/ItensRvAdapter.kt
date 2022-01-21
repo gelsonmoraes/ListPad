@@ -5,11 +5,12 @@ import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ifsp.scl.sdm.listpad.databinding.LayoutGenericoBinding
-import br.edu.ifsp.scl.sdm.listpad.model.Compra
 import br.edu.ifsp.scl.sdm.listpad.model.Itens
+import br.edu.ifsp.scl.sdm.listpad.db.DatabaseHandler
 
 class ItensRvAdapter(
     private val onItemClickListener: MainActivity,
+    private val dbComprasDatabaseHandler: DatabaseHandler,
     private val itensList: MutableList<Itens>
 ): RecyclerView.Adapter<ItensRvAdapter.ItemLayoutHolder>() {
 
@@ -60,6 +61,7 @@ class ItensRvAdapter(
             posicao = position
             false
         }
+
     }
 
     override fun getItemCount(): Int = itensList.size

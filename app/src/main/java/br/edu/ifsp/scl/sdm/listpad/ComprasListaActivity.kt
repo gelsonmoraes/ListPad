@@ -11,18 +11,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.scl.sdm.listpad.adapter.ComprasRvAdapter
 import br.edu.ifsp.scl.sdm.listpad.databinding.ActivityComprasListaBinding
 import br.edu.ifsp.scl.sdm.listpad.model.Compra
+import br.edu.ifsp.scl.sdm.listpad.db.DatabaseHandler
 
 class ComprasListaActivity : AppCompatActivity(), OnItemClickListener {
 
     companion object Extras {
         const val EXTRA_COMPRA = "ITEM_EXTRA"
         const val EXTRA_POSICAO_COMPRA = "POSICAO_EXTRA"
+        private val DB_NAME = "lista.db"
+        private val DB_VERSION = 1
+        private val ID = "ID"
     }
 
     private val activityComprasListaBinding: ActivityComprasListaBinding by lazy {
         ActivityComprasListaBinding.inflate(layoutInflater)
     }
-
+    //SQLite
+    private val comprasDatabaseHandler = DatabaseHandler(this)
     // Data Source
     private val compraList: MutableList<Compra> = mutableListOf()
 
@@ -55,6 +60,7 @@ class ComprasListaActivity : AppCompatActivity(), OnItemClickListener {
                 if (resultado.resultCode == RESULT_OK) {
                     resultado.data?.getParcelableExtra<Compra>(EXTRA_COMPRA)?.apply {
                         compraList.add(this)
+                        comprasDatabaseHandler.onCreate(DB_NAME)
                         comprasAdapter.notifyDataSetChanged()
                     }
                 }

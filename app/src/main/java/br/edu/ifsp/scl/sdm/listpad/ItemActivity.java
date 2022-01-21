@@ -26,6 +26,7 @@ public class ItemActivity extends AppCompatActivity {
 
         activityItemBinding.salvarBtn.setOnClickListener((View view) -> {
             Compra item = new Compra(
+                    null,
                     activityItemBinding.nomeEt.getText().toString(),
                     activityItemBinding.descricaoEt.getText().toString()
             );

@@ -143,25 +143,29 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
         itensList.add(
             Itens(
-            "Compras",
-                "Nesta lista você coloca o que precisa comprar. ",
+                null,
+                "Compras",
+                "Nesta lista você coloca o que precisa comprar."
         )
 
         )
         itensList.add(
             Itens(
+                null,
                 "Compromisso",
                 "Nesta lista você coloca seus próximos eventos.",
             )
         )
         itensList.add(
             Itens(
+                null,
                 "Geral",
                 "Lista de elementos em geral, aqui você pode listar o que quiser.",
             )
         )
         itensList.add(
             Itens(
+                null,
                 "Tarefa",
                 "Aqui você tem sua lista de afazeres.",
             )
